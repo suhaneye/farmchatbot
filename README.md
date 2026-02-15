@@ -1,3 +1,6 @@
+<p align="center">
+  <b>Production-style AI system demonstrating grounded LLM responses using retrieval instead of hallucination.</b>
+</p>
 # 🌾 FarmChatBot — Multilingual Agricultural Advisory System (RAG + Evaluation Framework)
 
 A production-style Retrieval Augmented Generation (RAG) system designed to deliver reliable agricultural recommendations in low-resource language settings.  
