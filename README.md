@@ -1,156 +1,185 @@
+# 🌾 FarmChatBot — Multilingual Agricultural Advisory System (RAG + Evaluation Framework)
+
 <p align="center">
-<b>Production-style AI system demonstrating grounded LLM responses using retrieval instead of hallucination.</b>
+Production-style AI system demonstrating grounded LLM responses using retrieval instead of hallucination.
 </p>
 
-<h1 align="center">🌾 FarmChatBot</h1>
-<h3 align="center">Multilingual Agricultural Advisory System (RAG + Evaluation Framework)</h3>
+---
+
+## 📋 Overview
+
+FarmChatBot is a **Retrieval Augmented Generation (RAG)** based advisory system designed to deliver reliable agricultural recommendations in low-resource language settings.
+
+Instead of allowing a language model to guess answers, the system retrieves verified agricultural information first and forces the model to respond only using that evidence.
+
+The project emphasizes:
+
+* grounded AI responses
+* measurable output quality
+* real-world deployment thinking
+
+It supports **multilingual interaction (Hindi & English)** via text or speech while maintaining English-based reasoning for model reliability.
 
 ---
 
-## Overview
+## 🚀 Quick Start
 
-FarmChatBot is a **Retrieval Augmented Generation (RAG) system** designed to deliver reliable agricultural recommendations in low-resource language settings.
+### 1. Clone the repository
 
-The project emphasizes **grounded AI responses, evaluation, and system design** rather than only chatbot generation.
+git clone https://github.com/suhaneye/farmchatbot.git
+cd farmchatbot
 
-Instead of letting a model guess answers, the system retrieves verified information and forces the model to respond only using evidence.
+### 2. Install dependencies
 
----
+pip install -r requirements.txt
 
-## Why this project exists
+### 3. Run the main pipeline
 
-In rural environments, farmers often rely on:
+Open the notebook:
 
-- fragmented information sources  
-- unverified advice  
-- language barriers  
-- delayed access to experts  
+farmBot_Final.ipynb
 
-Generic conversational AI systems can hallucinate and produce unsafe recommendations.
+Run all cells sequentially to:
 
-**Goal**
+* load embeddings
+* retrieve knowledge context
+* generate grounded answer
 
-> Build an assistant that answers only when verified context exists.
+### 4. Run evaluation (optional)
 
-FarmChatBot combines knowledge retrieval, real-time web context, multilingual access, and automated evaluation.
+RAG_test(web+qa).ipynb
 
----
-
-## What the system does
-
-Given a user query (Hindi/English, audio/text), the system:
-
-1. Understands the question  
-2. Retrieves relevant agricultural knowledge  
-3. Optionally pulls real-time web context  
-4. Generates a grounded answer  
-5. Translates to the user’s language  
-6. Automatically evaluates response quality
+This computes BLEU, ROUGE, F1 and semantic similarity.
 
 ---
 
-## System Architecture
+## 🏗️ System Architecture
 
-### Knowledge Layer
+### Knowledge Sources
 
 **Static Knowledge Base**
-- ~174,000 agricultural Q/A pairs
-- Embeddings: `all-MiniLM-L6-v2`
-- Vector database: ChromaDB
 
-**Dynamic Knowledge**
-- Live context retrieved using n8n workflow
-- Web extraction using Trafilatura
-- Stored as searchable embeddings
+* ~174,000 agricultural Q/A pairs
+* Embeddings: all-MiniLM-L6-v2
+* Vector Database: ChromaDB (qa_context)
+
+**Dynamic Web Context**
+
+* Automated retrieval using n8n workflow
+* Content extraction via Trafilatura
+* Embedded and stored as web_context
 
 ---
 
-### Retrieval (RAG Core)
+### Retrieval Pipeline (RAG Core)
 
-For each query:
+For each user query:
 
-- embed the query
-- retrieve Top-K passages
-- optionally fetch fresh web data
-- merge context and pass to model
+1. Convert query to embedding
+2. Retrieve Top-K relevant passages from vector database
+3. Optionally fetch real-time web context
+4. Combine and truncate context
+5. Send to LLM
 
-The assistant is instructed **not to answer without evidence**.
+The model is instructed to **not answer without retrieved context**.
 
 ---
 
 ### Grounded Generation
 
-Model: `Llama-4-Scout-17B-Instruct` (Groq API)
+Model: Llama-4-Scout-17B-Instruct (Groq API)
 
-Constraint:
-- Answer only using retrieved context
-- If context is insufficient → return uncertainty
+Behavior constraint:
 
----
+* respond only using provided evidence
+* return uncertainty when context is insufficient
 
-### Multilingual Pipeline
-
-Input:
-- Hindi speech → speech-to-text
-- Hindi text → translated to English
-
-Processing:
-- retrieval and reasoning in English
-
-Output:
-- English → Hindi translation
-- optional Hindi text-to-speech
+Goal → reduce hallucinated recommendations.
 
 ---
 
-## Evaluation Framework
+## 🌐 Multilingual Pipeline
 
-The system evaluates responses automatically.
+**Input**
 
-| Metric | Purpose |
-|------|------|
-| BLEU | lexical overlap |
-| ROUGE-L | sequence similarity |
-| Precision / Recall / F1 | keyword coverage |
-| Cosine Similarity | semantic similarity |
+* Hindi speech → Speech-to-Text
+* Hindi text → translated to English
 
-This treats the chatbot as an **engineered system**, not a demo.
+**Processing**
+
+* Retrieval and reasoning in English
+
+**Output**
+
+* English response → Hindi translation
+* Optional Hindi Text-to-Speech
 
 ---
 
-## Repository Structure
+## 📏 Evaluation Framework
 
-```text
+The chatbot is treated as a **measurable system**, not just a demo.
+
+| Metric                  | Purpose             |
+| ----------------------- | ------------------- |
+| BLEU                    | lexical overlap     |
+| ROUGE-L                 | sequence similarity |
+| Precision / Recall / F1 | keyword coverage    |
+| Cosine Similarity       | semantic similarity |
+
+Outputs are stored in:
+
+evaluated_out_ref2.csv
+
+---
+
+## 📁 Repository Contents
+
 farmchatbot/
-├── farmBot_Final.ipynb        # main pipeline
-├── RAG_test(web+qa).ipynb     # evaluation + retrieval
-├── My_workflow_3.json         # n8n automation workflow
-├── questionsv4.csv            # dataset
-├── evaluated_out_ref2.csv     # scored outputs
-└── README.md
-```
+
+* farmBot_Final.ipynb        → main RAG pipeline
+* RAG_test(web+qa).ipynb     → evaluation pipeline
+* My_workflow_3.json         → n8n automation workflow
+* questionsv4.csv            → dataset
+* evaluated_out_ref2.csv     → evaluation outputs
+* README.md
 
 ---
 
-## Key Concepts Demonstrated
+## 🧠 Key Ideas Demonstrated
 
-- Retrieval Augmented Generation (RAG)
-- Vector database search
-- Grounded generation to reduce hallucinations
-- Multilingual interface design
-- Automatic evaluation of LLM outputs
+* Retrieval Augmented Generation (RAG)
+* Vector search using embeddings
+* Grounded LLM responses (hallucination reduction)
+* Multilingual interface design
+* Automatic evaluation of AI outputs
+* Applied AI for real-world decision support
 
 ---
 
-## Future Improvements
+## 🛠️ Skills Demonstrated
 
-- Confidence scoring before answering
-- Conversation memory
-- WhatsApp / Telegram integration
-- Support for additional Indian languages
+* Python
+* NLP pipelines
+* Vector databases (ChromaDB)
+* Prompt grounding
+* LLM evaluation metrics
+* System design thinking
+* Applied AI in low-resource environments
+* Data pipeline structuring
+
+---
+
+## 🔮 Future Improvements
+
+* Confidence scoring before answering
+* Conversation memory
+* WhatsApp / Telegram interface
+* Additional Indian language support
 
 ---
 
 ## Takeaway
-This project demonstrates a **retrieval-first advisory pipeline** where evidence precedes generation and model outputs are systematically evaluated for reliability.
-This project demonstrates a **retrieval-first advisory pipeline** where evidence precedes generation and model outputs are systematically evaluated for reliability.
+This project is a retrieval-first advisory pipeline where evidence precedes generation and responses are evaluated for reliability.
+
+This project is a **retrieval-first advisory pipeline** where evidence precedes generation and responses are evaluated for reliability.
