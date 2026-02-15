@@ -1,116 +1,159 @@
-# 🌾 FarmChatBot: A Multilingual RAG-based Agricultural Chatbot with Evaluation Pipeline
+# 🌾 FarmChatBot — Multilingual Agricultural Advisory System (RAG + Evaluation Framework)
 
-## 📋 Overview
-
-FarmChatBot is a Retrieval-Augmented Generation (RAG) chatbot designed to provide accurate, trustworthy, and specific agricultural advice. It leverages large language models (LLMs) served via the Groq API and is evaluated using standard NLP metrics such as BLEU, ROUGE, Precision, Recall, F1-score, and Cosine Similarity.
-
-FarmBot supports **multilingual input and output**, enabling farmers and users to interact using **Hindi or English audio/text**, while maintaining high-quality retrieval and generation using English language models.
+A production-style Retrieval Augmented Generation (RAG) system designed to deliver reliable agricultural recommendations in low-resource language settings.  
+The project focuses on **grounded AI responses**, evaluation, and deployment thinking rather than only chatbot generation.
 
 ---
 
-## 🏗️ Architecture
+## Why this project exists
 
-### 1. 🗂️ Knowledge Base Construction (QA + Web)
+In rural environments, farmers often rely on:
+- fragmented information sources
+- unverified advice
+- language barriers
+- delayed access to experts
 
-- **QA Vector Store:** We embed and store ~174,000 question-answer pairs using `all-MiniLM-L6-v2` in ChromaDB (`qa_context`).
-- **Live Web Context via n8n:** Real-time data is fetched from trusted agricultural sources using **n8n workflow** → programmable Google Search → scraping content → embedding and storing in `web_context`.
-- **Trafilatura** is used for clean content extraction from noisy HTML.
+Generic chatbots can hallucinate and produce unsafe recommendations.
 
-### 2. 🔁 RAG Retrieval Process
+This project explores a practical goal:
 
-- User's query is embedded and used to:
-  - Retrieve top-k similar passages from the static **QA knowledge base**
-  - Dynamically fetch real-time context from **live web scraping**
-- The top results from both are **combined** and truncated to fit model limits.
+> *Build an assistant that answers only when it has verified context.*
 
-### 3. 🤖 Groq LLM Generation
+FarmChatBot combines:
+- knowledge retrieval
+- real-time web context
+- multilingual interface
+- automated evaluation
 
-- The LLM is instructed to respond strictly using retrieved context only.
-- Model used: `meta-llama/llama-4-scout-17b-16e-instruct` (via Groq API).
-
----
-
-## 🌐 Multilingual Support
-
-### Input:
-- 🎙️ Hindi audio → 📝 Hindi text (via speech-to-text)
-- 📝 Hindi text → 📝 English text (via translation)
-
-### Core:
-- English query used for embedding, RAG retrieval, and Groq LLM answering.
-
-### Output:
-- 📝 English text → 📝 Hindi translation
-- 📝 Hindi text → 🔈 Hindi audio (via text-to-speech)
-
-This ensures a seamless experience for non-English speakers while preserving model quality through English-based reasoning.
+The goal is **decision support**, not conversation.
 
 ---
 
-## 📏 Evaluation Pipeline
+## What the system does
 
-### Metrics Used:
+The system accepts a farmer query (Hindi/English, audio/text) and:
 
-- **BLEU Score**
-- **ROUGE-1 & ROUGE-L**
-- **Precision, Recall, F1** (based on keyword extraction)
-- **Cosine Similarity** (between reference and generated answer embeddings)
-
-### Improvements Implemented:
-
-- ✅ Automatic keyword extraction (coming soon) from reference answers for dynamic precision/recall scoring.
-- ✅ Embedding similarity checks to validate closeness beyond lexical overlap.
-- ✅ GPT-style evaluation (LLM-generated scores) used optionally for subjective quality checks.
+1. Understands the question  
+2. Retrieves relevant agricultural knowledge  
+3. Pulls real-time web context (optional)  
+4. Generates an answer **grounded in retrieved evidence**  
+5. Translates back to the user’s language  
+6. Evaluates answer quality automatically
 
 ---
 
-## 🔬 Vector Store Details
+## System Architecture
 
-ChromaDB is used to store two primary collections:
+### 1) Knowledge Layer
 
-- `qa_context`: Question–Answer data (preloaded)
-- `web_context`: Real-time context fetched using n8n & Google CSE
+Two sources are used:
 
-Each document includes:
-- Cleaned passage content
-- Embeddings (`all-MiniLM-L6-v2`)
-- Metadata: URL, original query, etc.
+**Static Knowledge Base**
+- ~174,000 agricultural Q/A pairs  
+- Embeddings: `all-MiniLM-L6-v2`  
+- Vector store: ChromaDB (`qa_context`)
 
----
-
-## 📁 Notebooks
-
-- `farmBot_Final.ipynb`: Main chatbot pipeline using QA context.
-- `RAG_test(web+qa).ipynb`: Evaluation + dynamic web retrieval + full scoring.
-- `evaluated_out_ref2.csv`: Contains final scored outputs from evaluation pipeline.
+**Dynamic Knowledge (Live Context)**
+- Automated retrieval via n8n workflow  
+- Web extraction via Trafilatura  
+- Embedded + stored as `web_context`
 
 ---
 
-## 🧪 How to Run
+### 2) Retrieval (RAG Core)
 
-1. Store QA dataset as embeddings in ChromaDB.
-2. Launch n8n webhook for real-time web scraping.
-3. Run chatbot pipeline with combined context retrieval (QA + Web).
-4. Evaluate responses using BLEU, ROUGE, F1, and cosine similarity.
+For each query:
+- embed the query
+- retrieve Top-K passages from QA vector store
+- optionally fetch fresh web context
+- merge + truncate context for model limits
 
----
-
-## 💡 Future Work
-
-- 🧠 Memory-based chat history
-- 📲 Telegram/WhatsApp integration
-- 🧾 Doctor-consultation fallback if context confidence is low
-- 🌍 Support for more Indian languages beyond Hindi
+The assistant is instructed to **not answer without context**.
 
 ---
 
-## 🤝 Credits
+### 3) Grounded Generation
 
-This project is inspired by the implementation of RAG in maternal care systems and leverages the following:
-- [ChromaDB](https://www.trychroma.com/)
-- [n8n](https://n8n.io/)
-- [Trafilatura](https://trafilatura.readthedocs.io/)
-- [Groq LLM](https://console.groq.com/)
-- [NLTK, Sklearn, HuggingFace](https://huggingface.co/)
+Model: `Llama-4-Scout-17B-Instruct` (via Groq API)
+
+Prompt constraint:
+- answer using provided context only  
+- if insufficient context → respond with uncertainty
 
 ---
+
+### 4) Multilingual Pipeline
+
+Input:
+- Hindi speech → Speech-to-Text  
+- Hindi text → translated to English
+
+Core:
+- retrieval + reasoning in English
+
+Output:
+- English answer → Hindi translation  
+- optional Hindi Text-to-Speech
+
+---
+
+## Evaluation Framework
+
+Responses are evaluated against references using:
+
+| Metric | What it checks |
+|---|---|
+| BLEU | lexical overlap |
+| ROUGE-L | sequence similarity |
+| Precision / Recall / F1 | keyword coverage |
+| Cosine Similarity | semantic similarity |
+
+This treats the chatbot as a **system to be measured**, not just demoed.
+
+---
+
+## Repository Contents
+
+```text
+farmchatbot/
+├── farmBot_Final.ipynb        # main pipeline
+├── RAG_test(web+qa).ipynb     # evaluation & web+QA retrieval
+├── My_workflow_3.json         # n8n automation workflow
+├── questionsv4.csv            # dataset
+├── evaluated_out_ref2.csv     # scored outputs
+└── README.md
+How to Run (high-level)
+
+Load/prepare embeddings in ChromaDB
+
+Start n8n workflow (optional) for live web context
+
+Run farmBot_Final.ipynb
+
+(Optional) run RAG_test(web+qa).ipynb for evaluation
+
+Key Ideas Demonstrated
+
+Retrieval Augmented Generation (RAG)
+
+Vector search with ChromaDB
+
+Grounded generation to reduce hallucinations
+
+Multilingual interface design
+
+Automated evaluation of LLM outputs
+
+Future Improvements
+
+Confidence scoring before answering
+
+Memory / conversation history
+
+WhatsApp / Telegram integration
+
+More Indian language support
+
+Takeaway
+
+This is not just a chatbot demo — it is a retrieval-first advisory pipeline where evidence comes before generation, and quality is evaluated systematically.
