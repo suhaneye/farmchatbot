@@ -149,3 +149,14 @@ This project demonstrates a retrieval-first advisory pipeline where evidence pre
 
 ## Repository Contents
 
+```text
+farmchatbot/
+├── farmBot_Final.ipynb        # main pipeline
+├── RAG_test(web+qa).ipynb     # evaluation + retrieval
+├── My_workflow_3.json         # n8n automation workflow
+├── questionsv4.csv            # dataset
+├── evaluated_out_ref2.csv     # scored outputs
+└── README.md
+```
+
+
