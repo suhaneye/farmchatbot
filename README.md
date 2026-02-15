@@ -180,6 +180,4 @@ farmchatbot/
 ---
 
 ## Takeaway
-This project is a retrieval-first advisory pipeline where evidence precedes generation and responses are evaluated for reliability.
-
 This project is a **retrieval-first advisory pipeline** where evidence precedes generation and responses are evaluated for reliability.
