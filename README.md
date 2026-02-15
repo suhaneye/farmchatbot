@@ -1,183 +1,253 @@
-# 🌾 FarmChatBot — Multilingual Agricultural Advisory System (RAG + Evaluation Framework)
+# FarmChatBot — End-to-End Retrieval-Augmented Decision Support System
 
-<p align="center">
-Production-style AI system demonstrating grounded LLM responses using retrieval instead of hallucination.
-</p>
+FarmChatBot is a retrieval-augmented decision-support system that combines semantic search, data pipelines, and controlled LLM reasoning to generate grounded responses.
 
----
+Instead of allowing a language model to answer directly, the system first retrieves verified information from structured and real-time sources, constructs evidence-backed context, and then constrains the model to reason only over that context.
 
-## 📋 Overview
+The objective is to simulate how enterprise knowledge systems operate in environments where correctness, traceability, and evaluation are required.
 
-FarmChatBot is a **Retrieval Augmented Generation (RAG)** based advisory system designed to deliver reliable agricultural recommendations in low-resource language settings.
+The project is intentionally built as a data + AI pipeline rather than a standalone chatbot interface.
 
-Instead of allowing a language model to guess answers, the system retrieves verified agricultural information first and forces the model to respond only using that evidence.
+Key idea:
+generation happens only after retrieval.
 
-The project emphasizes:
-
-* grounded AI responses
-* measurable output quality
-* real-world deployment thinking
-
-It supports **multilingual interaction (Hindi & English)** via text or speech while maintaining English-based reasoning for model reliability.
+This repository demonstrates how large language models can be integrated into a measurable, auditable system instead of being used as a black-box API.
 
 ---
 
-## 🚀 Quick Start
+## Tech Stack
 
-### 1. Clone the repository
+**Languages:** Python  
+**Libraries & Frameworks:** HuggingFace Transformers, SentenceTransformers, NLTK, Scikit-learn  
+**Vector Database:** ChromaDB  
+**LLM Inference:** Groq API (Llama-4-Scout-17B-Instruct)  
+**Workflow Automation:** n8n  
+**Web Processing:** Trafilatura  
+**Evaluation:** BLEU, ROUGE, Precision, Recall, F1, Cosine Similarity  
+**Data Processing:** Pandas, NumPy  
+**Interface:** Jupyter Notebook pipeline
 
+---
+
+## How to Run
+
+1. Clone the repository
 git clone https://github.com/suhaneye/farmchatbot.git
 cd farmchatbot
 
-### 2. Install dependencies
-
+2. Install dependencies
 pip install -r requirements.txt
 
-### 3. Run the main pipeline
-
-Open the notebook:
-
+3. Run main pipeline
+Open:
 farmBot_Final.ipynb
 
-Run all cells sequentially to:
+Run all cells sequentially.
 
-* load embeddings
-* retrieve knowledge context
-* generate grounded answer
+The pipeline will:
+- embed the query
+- retrieve relevant context
+- generate grounded response
+- optionally translate to Hindi
 
-### 4. Run evaluation (optional)
-
+4. Evaluation (optional)
+Open:
 RAG_test(web+qa).ipynb
 
-This computes BLEU, ROUGE, F1 and semantic similarity.
+This notebook computes BLEU, ROUGE, F1, and semantic similarity scores.
 
 ---
 
-## 🏗️ System Architecture
-
-### Knowledge Sources
-
-**Static Knowledge Base**
-
-* ~174,000 agricultural Q/A pairs
-* Embeddings: all-MiniLM-L6-v2
-* Vector Database: ChromaDB (qa_context)
-
-**Dynamic Web Context**
-
-* Automated retrieval using n8n workflow
-* Content extraction via Trafilatura
-* Embedded and stored as web_context
-
----
-
-### Retrieval Pipeline (RAG Core)
-
-For each user query:
-
-1. Convert query to embedding
-2. Retrieve Top-K relevant passages from vector database
-3. Optionally fetch real-time web context
-4. Combine and truncate context
-5. Send to LLM
-
-The model is instructed to **not answer without retrieved context**.
-
----
-
-### Grounded Generation
-
-Model: Llama-4-Scout-17B-Instruct (Groq API)
-
-Behavior constraint:
-
-* respond only using provided evidence
-* return uncertainty when context is insufficient
-
-Goal → reduce hallucinated recommendations.
-
----
-
-## 🌐 Multilingual Pipeline
-
-**Input**
-
-* Hindi speech → Speech-to-Text
-* Hindi text → translated to English
-
-**Processing**
-
-* Retrieval and reasoning in English
-
-**Output**
-
-* English response → Hindi translation
-* Optional Hindi Text-to-Speech
-
----
-
-## 📏 Evaluation Framework
-
-The chatbot is treated as a **measurable system**, not just a demo.
-
-| Metric                  | Purpose             |
-| ----------------------- | ------------------- |
-| BLEU                    | lexical overlap     |
-| ROUGE-L                 | sequence similarity |
-| Precision / Recall / F1 | keyword coverage    |
-| Cosine Similarity       | semantic similarity |
-
-Outputs are stored in:
-
-evaluated_out_ref2.csv
-
----
-
-## 📁 Repository Contents
+## Repository Structure
 
 farmchatbot/
-
-* farmBot_Final.ipynb        → main RAG pipeline
-* RAG_test(web+qa).ipynb     → evaluation pipeline
-* My_workflow_3.json         → n8n automation workflow
-* questionsv4.csv            → dataset
-* evaluated_out_ref2.csv     → evaluation outputs
-* README.md
-
----
-
-## 🧠 Key Ideas Demonstrated
-
-* Retrieval Augmented Generation (RAG)
-* Vector search using embeddings
-* Grounded LLM responses (hallucination reduction)
-* Multilingual interface design
-* Automatic evaluation of AI outputs
-* Applied AI for real-world decision support
+│
+├── farmBot_Final.ipynb        # Main RAG pipeline
+├── RAG_test(web+qa).ipynb     # Evaluation pipeline
+├── My_workflow_3.json         # n8n automation workflow
+├── questionsv4.csv            # QA dataset
+├── evaluated_out_ref2.csv     # Evaluation results
+├── requirements.txt           # Dependencies
+└── README.md
 
 ---
 
-## 🛠️ Skills Demonstrated
+## What Problem This Project Addresses
 
-* Python
-* NLP pipelines
-* Vector databases (ChromaDB)
-* Prompt grounding
-* LLM evaluation metrics
-* System design thinking
-* Applied AI in low-resource environments
-* Data pipeline structuring
+Large language models often produce confident but incorrect answers. In advisory or operational environments this is unsafe.
+
+This project explores a system design approach where:
+- the model is not treated as the source of truth
+- retrieved evidence becomes the source of truth
+- responses must be grounded in retrieved context
+- output quality is quantitatively evaluated
+
+The focus is system reliability and measurability, not just text generation.
 
 ---
 
-## 🔮 Future Improvements
+## System Overview
 
-* Confidence scoring before answering
-* Conversation memory
-* WhatsApp / Telegram interface
-* Additional Indian language support
+User Query → Embedding → Vector Retrieval → Context Assembly → LLM Reasoning → Evaluation
+
+Components:
+• Python pipeline orchestration  
+• Vector search using embeddings (ChromaDB)  
+• Real-time web ingestion workflow  
+• Controlled LLM reasoning via Groq API  
+• Automatic evaluation using NLP similarity metrics  
+
+The conversational interface is only an access layer — the core of the project is the retrieval, data processing, and evaluation pipeline.
+
+Primary Contribution:
+Implemented the semantic retrieval pipeline (embedding + vector search), designed the context-grounding prompt logic, built the evaluation framework (BLEU, ROUGE, F1, cosine similarity), and integrated real-time web ingestion via an automated workflow.
+
+---
+
+## Example Query
+
+User Query:
+"What should I do if wheat leaves turn yellow?"
+
+System Process:
+- Retrieve similar cases from knowledge base
+- Fetch recent agricultural advisory data
+- Construct grounded context
+- Generate response using constrained LLM
+
+Output:
+The system returns an evidence-based explanation (e.g., nitrogen deficiency or possible fungal disease) along with recommended corrective actions, while indicating uncertainty if context is insufficient.
+
+---
+
+## System Architecture
+
+The system is designed as a modular pipeline separating storage, retrieval, reasoning, and evaluation.
+
+High-level flow:
+
+1. Query processing and normalization
+2. Embedding generation
+3. Similarity search in vector database
+4. Optional live web retrieval
+5. Context assembly
+6. Constrained LLM reasoning
+7. Response evaluation
+
+---
+
+### Architecture Components
+
+**Query Processing**
+- Hindi & English input support
+- Speech-to-text conversion
+- Hindi-to-English translation for consistent retrieval
+
+**Embedding & Indexing**
+- Sentence embeddings via `all-MiniLM-L6-v2`
+- Stored in ChromaDB vector store
+
+**Knowledge Retrieval**
+Static dataset:
+~174,000 agricultural Q/A pairs
+
+Dynamic dataset:
+Real-time web content via automated workflow
+
+Top-K passages retrieved using cosine similarity.
+
+**Context Assembly**
+- Ranking and truncation
+- Structured prompt construction
+
+**Controlled Generation**
+Model: Llama-4-Scout-17B-Instruct (Groq API)
+
+The model is instructed to:
+- answer only using retrieved evidence
+- avoid unsupported claims
+- return uncertainty when context is insufficient
+
+**Multilingual Output**
+- English output translated to Hindi
+- Optional Hindi text-to-speech
+
+---
+
+## Data Pipeline
+
+### Data Ingestion
+- Dataset cleaned and standardized
+- Embedded into vector representations
+- Stored in ChromaDB (`qa_context`)
+
+### Real-Time Pipeline
+Search → Scrape → Clean → Extract → Embed → Store
+
+### Retrieval
+For each query:
+- Generate embedding
+- Perform similarity search
+- Merge static and live context
+
+### Prompt Construction
+Context + User Question + Instruction (answer only from context)
+
+---
+
+## Evaluation & Reliability
+
+The system output is quantitatively evaluated using:
+
+- BLEU (lexical overlap)
+- ROUGE-L (sequence similarity)
+- Precision / Recall / F1 (keyword coverage)
+- Cosine similarity (semantic similarity)
+
+Evaluation results are stored in `evaluated_out_ref2.csv`.
+
+Purpose:
+Treat the chatbot as a measurable system that can be benchmarked and improved.
+
+---
+
+## Design Decisions & Tradeoffs
+
+**RAG vs Fine-Tuning**
+Chosen for traceability, easy updates, and inspectable reasoning.
+
+**Vector Search vs Keyword Search**
+Provides semantic matching for varied farmer queries.
+
+**English Reasoning + Multilingual Interface**
+Improves model accuracy while supporting local language interaction.
+
+**Grounded Generation**
+Prefers uncertainty over incorrect answers.
+
+**Real-Time Web Context**
+Improves relevance but introduces noise handling challenges.
+
+**Evaluation Metrics**
+Added for reliability monitoring and regression testing.
+
+---
+
+## Future Improvements
+
+- Confidence scoring
+- Conversation memory
+- FastAPI deployment
+- Embedding caching
+- Retrieval ranking optimization
+- Messaging platform integration
 
 ---
 
 ## Takeaway
-This project is a **retrieval-first advisory pipeline** where evidence precedes generation and responses are evaluated for reliability.
+
+The goal is not to demonstrate a chatbot UI, but to show how LLMs can be integrated into a reliable information retrieval system where:
+
+retrieval provides knowledge  
+the model performs reasoning  
+evaluation measures reliability
