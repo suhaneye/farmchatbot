@@ -1,0 +1,136 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "farm-query",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "e7466e2a-f751-47a7-bb9d-c29620a0d119",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        360,
+        -40
+      ],
+      "webhookId": "abcd1234-farming"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "query",
+              "value": "={{ $json.body.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "679b7548-657d-42e9-9736-2e4dde8a7356",
+      "name": "Extract Query",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/customsearch/v1",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "q",
+              "value": "={{$json[\"query\"]}}"
+            },
+            {
+              "name": "key",
+              "value": "AIzaSyD7FUyMku2jHei5LDvEkaf2ICuYYfrD3-0"
+            },
+            {
+              "name": "cx",
+              "value": "b3b65bc67e3d3457d"
+            },
+            {
+              "name": "num",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "id": "ddcc283b-93a1-49ab-99a0-bd9728ca8590",
+      "name": "Google CSE Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        760,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "\nreturn [{\n  json: {\n    urls: items[0].json.items.map(i => i.link)\n  }\n}];\n"
+      },
+      "id": "68283c07-c99e-417c-89ee-6002d12fbc9c",
+      "name": "Extract URLs",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -40
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Query": {
+      "main": [
+        [
+          {
+            "node": "Google CSE Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google CSE Request": {
+      "main": [
+        [
+          {
+            "node": "Extract URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e70178ee-f346-42d5-bf1f-3386377ba191",
+  "meta": {
+    "instanceId": "a0f6c564ecb3c575d2f487b2b28b31904483e2a224facc499d013cf490f4b1f0"
+  },
+  "id": "rgBY32zxNEhp1ytr",
+  "tags": []
+}

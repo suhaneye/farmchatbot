@@ -1,0 +1,101 @@
+query,answer,reference,evaluation
+asking about how to avail kisan credit card loan for sali crop.,"Based on the provided context, I couldn't find any information related to availing a Kisan Credit Card loan for a specific crop, including Sali crop. The context only provides information about the Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) scheme, which provides financial assistance to farmers, and other schemes like Pradhan Mantri Kisan MaanDhan Yojana (PM-KMY) and Pradhan Mantri Fasal Bima Yojana (PMFBY).
+
+However, I can suggest that you contact the following institutions for information on Kisan Credit Card loans:
+
+1. **Agricultural Finance Corporation**: You can visit their website or approach their local office for guidance on Kisan Credit Card loans.
+2","suggested to consult with officer-marketing and recovery (rural),sbi local branch for details.","{
+  ""match"": 2,
+  ""helpfulness"": 2,
+  ""trustworthiness"": 2,
+  ""comments"": ""The chatbot's answer is mostly incorrect and less informative, providing unrelated information and suggesting a different institution, whereas the reference answer provides a direct and specific guidance.""
+}"
+asking about source of early ahu rice variety,"You can obtain the early Ahu rice variety from:
+
+1. ATIC (Agricultural Technology Information Centre), Jorhat, AAU (Assam Agricultural University) campus.
+You can either:
+- Take it directly from ATIC, Jorhat, AAU campus.
+- Or contact KVK (Krishi Vigyan Kendra) Lakhimpur at 9435340387 to arrange for a parcel or direct taking.
+
+Additionally, you can also consider the following varieties: 
+- Govind
+- IR50","suggested to take early ahu rice variety from atic,jorhat,aau campus through parcel or direct taking.","{
+  ""match"": 5,
+  ""helpfulness"": 5,
+  ""trustworthiness"": 5,
+  ""comments"": ""The chatbot's answer is fully accurate and equivalent to the reference answer, providing the same source and contact information for obtaining the early Ahu rice variety.""
+}"
+asking that he has not got proper friut from his coconut plant,"Based on the provided context, there seems to be a mismatch between the initial query about fertilizer application for a specific plant and the narrative provided. However,
+
+To address the issue of not getting proper fruit from a coconut plant, I recommend applying the following:
+
+- Urea: @ 1.5 kg 
+- SSP (Single Super Phosphate): @ 2.5 kg
+- MOP (Muriate of Potash): @ 1.75 kg
+- Borax: @ 25 gm./plant/year
+
+Apply these in the trench method as suggested.
+
+For further guidance on agricultural practices or pest management, you may contact your local agricultural extension office or institutions like the National Horticulture Board (NHB) or relevant agencies in","suggested him to aplly recommended fertilizer dose-urea@1.5 kg,ssp@2.5kg,mop@1.75 kg,borax@25 gm./plant/year in trench method.","{
+  ""match"": 5,
+  ""helpfulness"": 5,
+  ""trustworthiness"": 5,
+  ""comments"": ""The chatbot's answer is identical to the reference answer, providing the exact same fertilizer recommendations and application method.""
+}"
+asking about induced breeding of fishes,"For induced breeding of fishes, you can consider using the following hormones as suggested: 
+
+1. Ovaprim 
+2. Ovatide 
+3. Wova FH 
+
+Please contact KVK Nagaon, specifically Dr. Niranjan Deka at 9435066297, for further guidance on dosage and administration procedures.",given details about induced breeding of fishes.,"{
+  ""match"": 3,
+  ""helpfulness"": 3,
+  ""trustworthiness"": 3,
+  ""comments"": ""The chatbot's answer provides some relevant information, but lacks specific details about induced breeding of fishes and only mentions hormones without explaining their role.""
+}"
+asking about training for preparation of biomanure,"Based on the provided context, I suggest approaching the District Agricultural Officer or ATIC (Agricultural Technology Information Centre) in Jorhat, whose phone number is 0376-2310240, for information on training related to the preparation of biomanure. They would be able to provide you with specific guidance on available training programs, resources, or institutions that offer such training.","suggested to approach district agricultural officer  or atic,jorhat,ph (0376)2310240","{
+  ""match"": 5,
+  ""helpfulness"": 5,
+  ""trustworthiness"": 5,
+  ""comments"": ""The chatbot's answer is almost verbatim identical to the reference answer, providing the exact same information and contact details.""
+}"
+asking about treatment of low production of milk in cow,"Based on the context provided, for the treatment of low milk production in cows, I suggest:
+
+1. **Mineral supplementation**: Provide a mineral mixture like Ranmix Total, Milkmin, or Gwala at the recommended dose along with feed to ensure the cow is getting necessary minerals for milk production.
+
+2. **High proteinous green fodder**: Feed high proteinous green fodder such as cowpea, berseem, lucerne, etc., to support milk production.
+
+3. **Ostovet administration**: Administer Ostovet at 50 ml, twice daily, as suggested.
+
+Please consult with a veterinarian for a comprehensive evaluation and advice tailored to the specific needs of your cow.","suggested to provide mineral mixture like ranmix total, milkmin, gwala etc at recommanded dose along with feed.also, suggested to feed high protienous green fodder like cowpea, berseem, lucern etc.","{
+  ""match"": 5,
+  ""helpfulness"": 5,
+  ""trustworthiness"": 5,
+  ""comments"": ""The chatbot's answer is fully accurate, equivalent to the reference answer in meaning and usefulness, with only minor additions that do not detract from the overall helpfulness.""
+}"
+asking about the premature fruit dropping of coconut.,"The context provided is about managing premature fruit drop in Bottle Gourd, not coconut. However, based on the context provided, here are some specific actionable answers related to the management of premature fruit drop:
+
+To address nutrient deficiencies, you can apply:
+- Borax @ 25 gm/plant 
+- Borax @ 50 gm/plant per year along with urea and SSP (Single Super Phosphate).
+
+Additionally, consider applying Bordeaux mixture to manage pest and disease issues.
+
+For guidance on coconut premature fruit dropping, you may want to consult with the Department of Agriculture or research institutions such as the Indian Institute of Tropical Meteorology (IITM) or ICAR (Indian Council of Agricultural Research) institutes like the Central Plantation Crops Research Institute (",suggested to apply bordeaux mixture. apply borax @ 50 gm/plant per year along with urea & ssp.,"{
+  ""match"": 2,
+  ""helpfulness"": 2,
+  ""trustworthiness"": 2,
+  ""comments"": ""The chatbot's answer is mostly incorrect and irrelevant, as it addresses a different crop (Bottle Gourd) and provides unnecessary information, although it coincidentally mentions some correct measures.""
+}"
+asking  about  preservatives  of  tomato squash.,"The context does not mention tomato squash or its preservatives. However, it mentions suggested preservatives for an unspecified product, which are:
+
+1. Benzoic acid
+2. Sulphur dioxide 
+
+Additionally, the context provides information on seed treatment using Malathion 5% dust at a a<|header_start|> of of<|header_start|> 2 grams/kg of seed",suggested  preservatives  are: 1. benjoic acid &  2.  sulphar  dioxide . these chemicals re used to preserve for severel weeks.,"{
+  ""match"": 4,
+  ""helpfulness"": 4,
+  ""trustworthiness"": 4,
+  ""comments"": ""The chatbot's answer is mostly accurate, but it provides unnecessary information about seed treatment and lacks the context of preserving tomato squash for several weeks.""
+}"
